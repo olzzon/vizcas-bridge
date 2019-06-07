@@ -17,7 +17,9 @@ export class App {
                 autoConnect: true,
             }
         );
+        this.runVizServer();
     }
+
     runVizServer() {
         this.vizEngine = net.createServer((socket) => {
             console.log("connected");
