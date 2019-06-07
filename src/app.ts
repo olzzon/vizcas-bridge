@@ -4,56 +4,62 @@ import { CasparCG } from 'casparcg-connection';
 export class App {
     ccgConnection: CasparCG;
     vizEngine: any;
+    vizMessage: Array<string> = [];
+    VIZ_SERVER_PORT: number = 6100;
+    CCG_IP: string = "127.0.0.1"
+    CCG_PORT: number = 5250;
 
     constructor() {
-        const VIZ_SERVER_PORT: number = 6100;
-        const CCG_IP: string = "127.0.0.1"
-        const CCG_PORT: number = 5250;
-        let vizMessage: Array<string>;
-
         this.ccgConnection = new CasparCG(
             {
-                host: CCG_IP,
-                port: CCG_PORT,
+                host: this.CCG_IP,
+                port: this.CCG_PORT,
                 autoConnect: true,
             }
         );
-
+    }
+    runVizServer() {
         this.vizEngine = net.createServer((socket) => {
-            const _this2 = this
             console.log("connected");
 
-            socket.on("data", function(data) {
-                vizMessage = data.toString().split("*");
-                if (vizMessage[0] === "SCENE") {
-                    socket.write('SCENE loading' + '\0');
-                    // Load scene in CasparCG
-                    _this2.ccgConnection.play(
-                        1, // output,
-                        20, // layer,
-                        vizMessage[2], //Mediafile
-                    );
-                } else {
-                    console.log("Command not implemented :", vizMessage[0]);
-                    console.log('++++++++++++++++++++++++++++');
-                    socket.write('Unknow command--' + '\0');
-                }
-            });
+            socket.on("data",
+                ((data) => {
+                    this.vizMessage = data.toString().split("*");
+                    if (this.vizMessage[0] === "SCENE") {
+                        socket.write('SCENE loading' + '\0');
+                        // Load scene in CasparCG
+                        this.ccgConnection.play(
+                            1, // output,
+                            20, // layer,
+                            this.vizMessage[2], //Mediafile
+                        );
+                    } else {
+                        console.log("Command not implemented :", this.vizMessage[0]);
+                        console.log('++++++++++++++++++++++++++++');
+                        socket.write('Unknow command--' + '\0');
+                    }
+                })
+            );
 
-            socket.on("error", function(error) {
+            socket.on("error", (
+                (error) => {
+                    console.log("error - " + error);
+                })
+            );
 
-                console.log("error - " + error);
-            });
+            socket.on("close",
+                ((data) => {
 
-            socket.on("close", function(data) {
+                    console.log("closed");
+                    socket.removeAllListeners();
+                })
+            );
 
-                console.log("closed");
-                socket.removeAllListeners();
-            });
-
-        }).listen(VIZ_SERVER_PORT, function() {
-            console.log("Engine listening : " + VIZ_SERVER_PORT);
-        });
-    }
+        }).listen(this.VIZ_SERVER_PORT,
+            (() => {
+                console.log("Engine listening : " + this.VIZ_SERVER_PORT);
+            })
+        );
+    };
 
 }
