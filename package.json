@@ -1,0 +1,31 @@
+{
+  "name": "vizpercg-bridge",
+  "version": "0.1.0",
+  "description": "REST Api for controlling CasparCG instead of a Viz",
+  "main": "index.ts",
+  "author": "Kasper Olsson Hans (TV2 Denmark)",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src --out-dir dist --extensions \".ts,.tsx\"",
+    "typecheck": "tsc",
+    "start": "node ./dist/index.js",
+    "debug": "node --inspect ./dist/index.js",
+    "build-linux": "yarn pkg -t node10-linux ./dist/index.js --output ./dist/CasparCG-state-scanner",
+    "build-win": "yarn pkg -t node10-win ./dist/index.js --output ./dist/CasparCG-state-scanner.exe"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.0",
+    "casparcg-connection": "^4.7.0",
+    "net": "^1.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "pkg": "^4.4.0"
+  }
+}
