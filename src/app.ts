@@ -26,7 +26,11 @@ export class App {
 
             socket.on("data",
                 ((data) => {
+                    console.log("Recieved command :", data.toString());
                     this.vizMessage = data.toString().split("*");
+                    //ToDo: detailed check datastructure based on shm docs:
+                    //"Viz External commands Manual"
+
                     if (this.vizMessage[0] === "SCENE") {
                         socket.write('SCENE loading' + '\0');
                         // Load scene in CasparCG
@@ -36,7 +40,7 @@ export class App {
                             this.vizMessage[2], //Mediafile
                         );
                     } else {
-                        console.log("Command not implemented :", this.vizMessage[0]);
+                        console.log("Following command not implemented :", this.vizMessage);
                         console.log('++++++++++++++++++++++++++++');
                         socket.write('Unknow command--' + '\0');
                     }
