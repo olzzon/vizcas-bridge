@@ -4,7 +4,7 @@ import { CasparCG } from 'casparcg-connection';
 export class App {
     ccgConnection: CasparCG;
     vizEngine: any;
-    vizMessage: Array<string> = [];
+    vizMessages: Array<string> = [];
     VIZ_SERVER_PORT: number = 6101;
     CCG_IP: string = "127.0.0.1"
     CCG_PORT: number = 5250;
@@ -52,26 +52,38 @@ export class App {
             socket.on("data",
                 ((data) => {
                     console.log("Recieved command :", data.toString());
-                    this.vizMessage = data.toString().split("\0");
-                    //ToDo: detailed check datastructure based on shm docs:
-                    //"Viz External commands Manual"
+                    this.vizMessages = data.toString().split("\0");
 
-                    this.vizMessage.map((message) => {
-                        if (message.substring(2,6) === "SCENE") {
-                            socket.write('SCENE loading' + '\0');
+                    this.vizMessages.map((item) => {
+                        let messageNumber = item.substring(0, item.indexOf(" "));
+                        let message = item.substring(item.indexOf(" ")+1);
+                        console.log("Message number :", messageNumber, "  Message : ", message);
+
+                        if (message.substring(0.4) === "SCENE") {
                             // Load scene in CasparCG
                             this.ccgConnection.play(
                                 1, // output,
                                 20, // layer,
-                                this.vizMessage[2], //Mediafile
-                                );
+                                message, //Mediafile
+                            );
+                        }
+                        // Initialistion of Viz Emulator:
+                        else if (message === "MAIN VERSION") {
+                            socket.write(messageNumber + " " + message + '.\0')
+                            socket.write(messageNumber + " " + "Version: 3.12.1.83617.15" + '.\0')
+
+                        } else if (message === "MAIN*SYSTEM*MEMORY_ADVANCED GET") {
+                            socket.write(messageNumber + " " + message + '.\0')
+                            socket.write(messageNumber + " " + "{ PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4533 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3375 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }" + '.\0')
+                        } else if (message === "MAIN*TEXTURE*MEMORY GET") {
+                            socket.write(messageNumber + " " + message + '.\0')
+                            socket.write(messageNumber + " " + "{ TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }" + '.\0')
                         } else {
                             console.log("Following command not implemented :", message);
                             console.log('++++++++++++++++++++++++++++');
-                            socket.write(message + '.\0')
-                                //'14 MAIN VERSION.15 MAIN*SYSTEM*MEMORY_ADVANCED GET.14 Version: 3.12.1.83617.15 { PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4533 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3375 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }.16 MAIN*TEXTURE*MEMORY GET.16 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }.17 MAIN VERSION.18 MAIN*SYSTEM*MEMORY_ADVANCED GET.19 MAIN*TEXTURE*MEMORY GET.17 Version: 3.12.1.83617.18 { PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4532 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3375 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }.19 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }.20 MAIN VERSION.21 MAIN*SYSTEM*MEMORY_ADVANCED GET.22 MAIN*TEXTURE*MEMORY GET.20 Version: 3.12.1.83617.21 { PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4536 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3399 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }.22 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 842407936 SIZE 0 }.23 MAIN VERSION.24 MAIN*SYSTEM*MEMORY_ADVANCED GET.25 MAIN*TEXTURE*MEMORY GET.23 Version: 3.12.1.83617.24 { PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4535 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3399 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }.25 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 843390976 SIZE 0 }.' + '\0');
+                            socket.write("Message unknown" + '.\0')
                         }
-                        })
+                    })
                 })
             );
 
