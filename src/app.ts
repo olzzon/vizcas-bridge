@@ -5,7 +5,7 @@ export class App {
     ccgConnection: CasparCG;
     vizEngine: any;
     vizMessage: Array<string> = [];
-    VIZ_SERVER_PORT: number = 6100;
+    VIZ_SERVER_PORT: number = 6101;
     CCG_IP: string = "127.0.0.1"
     CCG_PORT: number = 5250;
 
