@@ -24,26 +24,54 @@ export class App {
         this.vizEngine = net.createServer((socket) => {
             console.log("connected");
 
+
+            /* Initial initialization from VizTrio:
+                1 PLAY INIT
+                2 PLAY*SCENE*ANIM*ACTIVE SET ON
+                3 PLAY*SCENE*ANIM*TIME SET 0
+                4 MAIN VERSION
+                5 COMMAND_EXIST SCENE STATUS*READY_TO_DRAW GET_ASYNC
+                6 TC*TC_INFO GET
+                7 MAIN VERSION
+                8 MAIN*SYSTEM*MEMORY_ADVANCED GET
+                9 MAIN*TEXTURE*MEMORY GET
+
+            ++++++++++++++++++++++++++++
+            */
+
+            /* Response:
+
+            7 MAIN VERSION.
+            7 Version: 3.12.1.83617.15 { PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4533 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3375 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }.
+            8 MAIN*SYSTEM*MEMORY_ADVANCED GET.
+            9 MAIN*TEXTURE*MEMORY GET.
+            9 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }.
+            */
+
+
             socket.on("data",
                 ((data) => {
                     console.log("Recieved command :", data.toString());
-                    this.vizMessage = data.toString().split("*");
+                    this.vizMessage = data.toString().split("\0");
                     //ToDo: detailed check datastructure based on shm docs:
                     //"Viz External commands Manual"
 
-                    if (this.vizMessage[0] === "SCENE") {
-                        socket.write('SCENE loading' + '\0');
-                        // Load scene in CasparCG
-                        this.ccgConnection.play(
-                            1, // output,
-                            20, // layer,
-                            this.vizMessage[2], //Mediafile
-                        );
-                    } else {
-                        console.log("Following command not implemented :", this.vizMessage);
-                        console.log('++++++++++++++++++++++++++++');
-                        socket.write('Unknow command--' + '\0');
-                    }
+                    this.vizMessage.map((message) => {
+                        if (message.substring(2,6) === "SCENE") {
+                            socket.write('SCENE loading' + '\0');
+                            // Load scene in CasparCG
+                            this.ccgConnection.play(
+                                1, // output,
+                                20, // layer,
+                                this.vizMessage[2], //Mediafile
+                                );
+                        } else {
+                            console.log("Following command not implemented :", message);
+                            console.log('++++++++++++++++++++++++++++');
+                            socket.write(message + '.\0')
+                                //'14 MAIN VERSION.15 MAIN*SYSTEM*MEMORY_ADVANCED GET.14 Version: 3.12.1.83617.15 { PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4533 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3375 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }.16 MAIN*TEXTURE*MEMORY GET.16 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }.17 MAIN VERSION.18 MAIN*SYSTEM*MEMORY_ADVANCED GET.19 MAIN*TEXTURE*MEMORY GET.17 Version: 3.12.1.83617.18 { PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4532 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3375 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }.19 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }.20 MAIN VERSION.21 MAIN*SYSTEM*MEMORY_ADVANCED GET.22 MAIN*TEXTURE*MEMORY GET.20 Version: 3.12.1.83617.21 { PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4536 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3399 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }.22 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 842407936 SIZE 0 }.23 MAIN VERSION.24 MAIN*SYSTEM*MEMORY_ADVANCED GET.25 MAIN*TEXTURE*MEMORY GET.23 Version: 3.12.1.83617.24 { PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4535 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3399 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }.25 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 843390976 SIZE 0 }.' + '\0');
+                        }
+                        })
                 })
             );
 
