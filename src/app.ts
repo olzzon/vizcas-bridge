@@ -47,7 +47,9 @@ export class App {
             9 MAIN*TEXTURE*MEMORY GET.
             9 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }.
             */
-
+            const MAIN_VERSION = "Version: 3.12.1.83617.15"
+            const MAIN_MEM_ADVANCED = "{ PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4533 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3375 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }"
+            const MAIN_TEXTURE_MEM = "{ TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }"
 
             socket.on("data",
                 ((data) => {
@@ -70,14 +72,14 @@ export class App {
                         // Initialistion of Viz Emulator:
                         else if (message === "MAIN VERSION") {
                             socket.write(messageNumber + " " + message + '.\0')
-                            socket.write(messageNumber + " " + "Version: 3.12.1.83617.15" + '.\0')
+                            socket.write(messageNumber + " " + MAIN_VERSION + '.\0')
 
                         } else if (message === "MAIN*SYSTEM*MEMORY_ADVANCED GET") {
                             socket.write(messageNumber + " " + message + '.\0')
-                            socket.write(messageNumber + " " + "{ PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4533 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3375 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }" + '.\0')
+                            socket.write(messageNumber + " " + MAIN_MEM_ADVANCED + '.\0')
                         } else if (message === "MAIN*TEXTURE*MEMORY GET") {
                             socket.write(messageNumber + " " + message + '.\0')
-                            socket.write(messageNumber + " " + "{ TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }" + '.\0')
+                            socket.write(messageNumber + " " + MAIN_TEXTURE_MEM + '.\0')
                         } else {
                             console.log("Following command not implemented :", message);
                             console.log('++++++++++++++++++++++++++++');
