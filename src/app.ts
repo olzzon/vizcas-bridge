@@ -1,6 +1,7 @@
 import net from 'net';
 import { CasparCG } from 'casparcg-connection';
 import { translateCommand } from './translateCommand';
+import { ITranslationItem } from './translationProtocols';
 
 export class App {
     ccgConnection: CasparCG;
@@ -59,17 +60,17 @@ export class App {
                     this.vizMessages = data.toString().split("\0");
 
                     this.vizMessages.map((item) => {
-                        let command = translateCommand(item);
+                        let translated: ITranslationItem = translateCommand(item);
                         let messageNumber = item.substring(0, item.indexOf(" "));
                         let message = item.substring(item.indexOf(" ")+1);
                         console.log("Message number :", messageNumber, "  Message : ", message);
 
-                        if (message.substring(0.4) === "SCENE") {
+                        if (translated.ccgCommandType === 'play') {
                             // Load scene in CasparCG
                             this.ccgConnection.play(
                                 1, // output,
                                 20, // layer,
-                                message, //Mediafile
+                                translated.ccgArgument, //Mediafile
                             );
                         }
                         // Initialistion of Viz Emulator:
