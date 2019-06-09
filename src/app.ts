@@ -65,6 +65,11 @@ export class App {
                         let message = item.substring(item.indexOf(" ")+1);
                         console.log("Message number :", messageNumber, "  Message : ", message);
 
+                        if (translated.vizResponseCommand != "") {
+                            console.log("Return message :", translated.vizResponseCommand);
+                            socket.write(messageNumber + " " + translated.vizResponseCommand + '\0')
+
+                        }
                         if (translated.ccgCommandType === 'play') {
                             // Load scene in CasparCG
                             this.ccgConnection.play(
