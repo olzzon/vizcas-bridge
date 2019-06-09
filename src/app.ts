@@ -1,5 +1,6 @@
 import net from 'net';
 import { CasparCG } from 'casparcg-connection';
+import { translateCommand } from './translateCommand';
 
 export class App {
     ccgConnection: CasparCG;
@@ -47,6 +48,7 @@ export class App {
             9 MAIN*TEXTURE*MEMORY GET.
             9 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }.
             */
+
             const MAIN_VERSION = "Version: 3.12.1.83617.15"
             const MAIN_MEM_ADVANCED = "{ PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4533 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3375 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }"
             const MAIN_TEXTURE_MEM = "{ TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }"
@@ -57,6 +59,7 @@ export class App {
                     this.vizMessages = data.toString().split("\0");
 
                     this.vizMessages.map((item) => {
+                        let command = translateCommand(item);
                         let messageNumber = item.substring(0, item.indexOf(" "));
                         let message = item.substring(item.indexOf(" ")+1);
                         console.log("Message number :", messageNumber, "  Message : ", message);
