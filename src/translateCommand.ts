@@ -8,10 +8,11 @@ export const translateCommand = (vizCommand: string): ITranslationItem => {
     let message = vizCommand.substring(vizCommand.indexOf(" ")+1);
 
     for (let i=0; i < numberOfCommands; i++) {
+        //ToDo handle {argument1}
         if (commands[i].vizCommand === message) {
             return commands[i]
         }
     }
-    return {vizCommand: "",ccgCommandType: "",ccgArgument: ""};
+    return {vizCommand: "",vizResponseCommand: "", ccgCommandType: "",ccgArgument: ""};
 
 }
