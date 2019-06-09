@@ -75,11 +75,14 @@ export class App {
                         }
                         // Initialistion of Viz Emulator:
                         else if (message === "MAIN VERSION") {
+                            console.log("Return message :", MAIN_VERSION);
                             socket.write(messageNumber + " " + MAIN_VERSION + '\0')
 
                         } else if (message === "MAIN*SYSTEM*MEMORY_ADVANCED GET") {
+                            console.log("Return message :", MAIN_MEM_ADVANCED);
                             socket.write(messageNumber + " " + MAIN_MEM_ADVANCED + '\0')
                         } else if (message === "MAIN*TEXTURE*MEMORY GET") {
+                            console.log("Return message :", MAIN_TEXTURE_MEM);
                             socket.write(messageNumber + " " + MAIN_TEXTURE_MEM + '\0')
                         } else {
                             console.log("Following command not implemented :", message);
