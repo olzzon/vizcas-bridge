@@ -78,8 +78,10 @@ export class App {
                                 translated.ccgArgument, //Mediafile
                             );
                         }
+
+
                         // Initialistion of Viz Emulator:
-                        else if (message === "MAIN VERSION") {
+                        if (message === "MAIN VERSION") {
                             console.log("Return message :", MAIN_VERSION);
                             socket.write(messageNumber + " " + MAIN_VERSION + '\0')
 
