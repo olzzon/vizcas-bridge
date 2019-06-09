@@ -1,6 +1,6 @@
 import { translationSchemes, ITranslationScheme, ITranslationItem } from './translationProtocols';
 
-export const translateCommand = (vizCommand: string): any => {
+export const translateCommand = (vizCommand: string): ITranslationItem => {
     let commands: ITranslationScheme = translationSchemes
     let numberOfCommands: number = commands.length;
 
@@ -12,5 +12,6 @@ export const translateCommand = (vizCommand: string): any => {
             return commands[i]
         }
     }
+    return {vizCommand: "",ccgCommandType: "",ccgArgument: ""};
 
 }
