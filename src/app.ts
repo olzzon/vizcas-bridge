@@ -52,7 +52,7 @@ export class App {
 
             socket.on("data",
                 ((data) => {
-                    console.log("Recieved command :", data.toString());
+                    console.log("Recieved command tcp-string :", data.toString());
                     this.vizMessages = data.toString().split("\0");
 
                     this.vizMessages.map((item) => {

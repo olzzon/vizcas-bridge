@@ -8,7 +8,9 @@ export const translateCommand = (vizCommand: string): ITranslationItem => {
 
     for (let i=0; i < numberOfCommands; i++) {
         //ToDo handle {argument1}
-        if (commands[i].vizCommand === message) {
+        if (thisCommand(commands[i].vizCommand, message)) {
+            let argument = findArgumentInString(commands[i].vizCommand, message);
+            commands[i].ccgArgument = replaceArgumentInString(commands[i].ccgArgument, argument)
             return commands[i]
         }
     }
@@ -18,5 +20,40 @@ export const translateCommand = (vizCommand: string): ITranslationItem => {
         ccgCommandType: "",
         ccgArgument: "",
     };
+}
 
+const thisCommand = (vizCommand: string, message: string): boolean => {
+    if (vizCommand === message) {
+        return true
+    }
+    let splitArray: Array<string> = vizCommand.split("{argument}");
+    if (splitArray.length === 3) {
+        if(message.includes(vizCommand[0]) && message.includes(vizCommand[2])) {
+            return true
+        }
+    } else if (splitArray.length === 2) {
+        if(message.includes(vizCommand[0])) {
+            return true
+        }
+    }
+    return false
+}
+
+const findArgumentInString = (vizCommand: string, message: string) => {
+    let splitArray: Array<string> = vizCommand.split("{argument}");
+    splitArray.map((textPart) => {
+        if (textPart !=  "{argument}") {
+            vizCommand.replace(textPart, "");
+        }
+    })
+    return vizCommand;
+}
+
+const replaceArgumentInString = (ccgCommand: string, argument: string): string => {
+    if (ccgCommand.includes("{argument}")) {
+        return ccgCommand.replace("{argument}", argument);
+    } else {
+        return ccgCommand;
+    }
+    return ""
 }
