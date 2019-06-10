@@ -62,7 +62,7 @@ export class App {
                             console.log("Message number :", messageNumber, "  Message : ", translated.vizCommand);
 
                             if (translated.vizResponseCommand != "") {
-                                console.log("Viz return message :", translated.vizResponseCommand);
+                                console.log("Viz return message : ", messageNumber + " " + translated.vizResponseCommand);
                                 socket.write(messageNumber + " " + translated.vizResponseCommand + '\0')
                             }
                             if (translated.ccgCommandType === 'play') {
@@ -75,7 +75,9 @@ export class App {
                                     );
                                 }
                         } else {
-                            console.log("Unknown message : ", item);
+                            if (item != "") {
+                                console.log("Unknown message : ", item);
+                            }
                         }
                     })
                 })
