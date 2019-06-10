@@ -29,6 +29,25 @@ export const translationSchemes: ITranslationScheme = [
     },
     // Scene loading and preparing:
     {
+        vizCommand: "SCENE*{argument} CUE",
+        vizResponseCommand: "0", // Return zero  -- playing status?
+        ccgCommandType: "load",
+        ccgArgument: "{argument}",
+    },
+    {
+        vizCommand: "RENDERER*MAIN_LAYER SET_OBJECT SCENE*{argument}",
+        vizResponseCommand: "<F8947D18-08FB-4E44-8A68082B7A332D58>",  //Return scene UUID
+        ccgCommandType: "",
+        ccgArgument: "{argument}",
+    },
+    {
+        vizCommand: "SCENE*{argument}*STAGE START", // Start the Scene?
+        vizResponseCommand: "",
+        ccgCommandType: "play",
+        ccgArgument: "{argument}",
+    },
+    // Testing purposes with static arguments:
+    {
         vizCommand: "SCENE*Default/test CUE",
         vizResponseCommand: "0", // Return zero  -- playing status?
         ccgCommandType: "load",
