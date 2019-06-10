@@ -50,10 +50,6 @@ export class App {
             9 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }.
             */
 
-            const MAIN_VERSION = "Version: 3.12.1.83617.15"
-            const MAIN_MEM_ADVANCED = "{ PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4533 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3375 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }"
-            const MAIN_TEXTURE_MEM = "{ TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }"
-
             socket.on("data",
                 ((data) => {
                     console.log("Recieved command :", data.toString());
@@ -61,40 +57,20 @@ export class App {
 
                     this.vizMessages.map((item) => {
                         let translated: ITranslationItem = translateCommand(item);
-                        let messageNumber = item.substring(0, item.indexOf(" "));
-                        let message = item.substring(item.indexOf(" ")+1);
-                        console.log("Message number :", messageNumber, "  Message : ", message);
+                        console.log("Message number :", translated.messageNumber, "  Message : ", translated.vizCommand);
 
                         if (translated.vizResponseCommand != "") {
-                            console.log("Return message :", translated.vizResponseCommand);
-                            socket.write(messageNumber + " " + translated.vizResponseCommand + '\0')
-
+                            console.log("Viz return message :", translated.vizResponseCommand);
+                            socket.write(translated.messageNumber + " " + translated.vizResponseCommand + '\0')
                         }
                         if (translated.ccgCommandType === 'play') {
+                            console.log("CasparCG play :", translated.ccgArgument);
                             // Load scene in CasparCG
                             this.ccgConnection.play(
                                 1, // output,
                                 20, // layer,
                                 translated.ccgArgument, //Mediafile
                             );
-                        }
-
-
-                        // Initialistion of Viz Emulator:
-                        if (message === "MAIN VERSION") {
-                            console.log("Return message :", MAIN_VERSION);
-                            socket.write(messageNumber + " " + MAIN_VERSION + '\0')
-
-                        } else if (message === "MAIN*SYSTEM*MEMORY_ADVANCED GET") {
-                            console.log("Return message :", MAIN_MEM_ADVANCED);
-                            socket.write(messageNumber + " " + MAIN_MEM_ADVANCED + '\0')
-                        } else if (message === "MAIN*TEXTURE*MEMORY GET") {
-                            console.log("Return message :", MAIN_TEXTURE_MEM);
-                            socket.write(messageNumber + " " + MAIN_TEXTURE_MEM + '\0')
-                        } else {
-                            console.log("Following command not implemented :", message);
-                            console.log('++++++++++++++++++++++++++++');
-                            //socket.write("Message unknown" + '.\0')
                         }
                     })
                 })

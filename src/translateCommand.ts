@@ -10,6 +10,7 @@ export const translateCommand = (vizCommand: string): ITranslationItem => {
     for (let i=0; i < numberOfCommands; i++) {
         //ToDo handle {argument1}
         if (commands[i].vizCommand === message) {
+            commands[i].messageNumber = messageNumber;
             return commands[i]
         }
     }
