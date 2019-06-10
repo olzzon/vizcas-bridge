@@ -58,7 +58,7 @@ export class App {
                     this.vizMessages.map((item) => {
                         let translated: ITranslationItem = translateCommand(item);
                         let messageNumber: string = item.substring(0, item.indexOf(" "));
-                        if (item != "") {
+                        if (translated.vizCommand != "") {
                             console.log("Message number :", messageNumber, "  Message : ", translated.vizCommand);
 
                             if (translated.vizResponseCommand != "") {
