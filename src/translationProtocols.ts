@@ -48,3 +48,27 @@ export const translationSchemes: ITranslationScheme = [
     },
 ];
 
+
+
+            /* Initial initialization from VizTrio:
+                1 PLAY INIT
+                2 PLAY*SCENE*ANIM*ACTIVE SET ON
+                3 PLAY*SCENE*ANIM*TIME SET 0
+                4 MAIN VERSION
+                5 COMMAND_EXIST SCENE STATUS*READY_TO_DRAW GET_ASYNC
+                6 TC*TC_INFO GET
+                7 MAIN VERSION
+                8 MAIN*SYSTEM*MEMORY_ADVANCED GET
+                9 MAIN*TEXTURE*MEMORY GET
+
+            ++++++++++++++++++++++++++++
+            */
+
+            /* Response:
+
+            7 MAIN VERSION.
+            7 Version: 3.12.1.83617.15 { PHYSICAL     8120 TOTAL MBYTE }{ PHYSICAL     4533 FREE MBYTE }{ PAGEFILE     9400 TOTAL MBYTE }{ PAGEFILE     3375 FREE MBYTE }{ VIRTUAL 134217727 TOTAL MBYTE }{ VIRTUAL 134211542 FREE MBYTE }{ EXTENDED        0 FREE MBYTE }.
+            8 MAIN*SYSTEM*MEMORY_ADVANCED GET.
+            9 MAIN*TEXTURE*MEMORY GET.
+            9 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }.
+            */
