@@ -59,7 +59,7 @@ export class App {
                         let translated: ITranslationItem = translateCommand(item);
                         let messageNumber: string = item.substring(0, item.indexOf(" "));
                         if (translated.vizCommand != "") {
-                            console.log("Message number :", messageNumber, "  Message : ", item, " Argument :", translated.ccgArgument);
+                            console.log("Message : ", item, " Argument :", translated.ccgArgument);
 
                             if (translated.vizResponseCommand != "") {
                                 console.log("Viz return message : ", messageNumber + " " + translated.vizResponseCommand);

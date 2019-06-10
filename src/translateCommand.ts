@@ -41,10 +41,11 @@ const thisCommand = (vizCommand: string, message: string): boolean => {
 
 const findArgumentInString = (vizCommand: string, message: string) => {
     let splitArray: Array<string> = vizCommand.split("{argument}");
+    let argument = message;
     splitArray.map((textPart) => {
-        vizCommand.replace(textPart, "");
+        argument = argument.replace(textPart, "");
     })
-    return vizCommand;
+    return argument;
 }
 
 const replaceArgumentInString = (ccgCommand: string, argument: string): string => {
@@ -53,5 +54,4 @@ const replaceArgumentInString = (ccgCommand: string, argument: string): string =
     } else {
         return ccgCommand;
     }
-    return ""
 }
