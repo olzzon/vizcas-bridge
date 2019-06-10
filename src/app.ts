@@ -57,12 +57,14 @@ export class App {
 
                     this.vizMessages.map((item) => {
                         let translated: ITranslationItem = translateCommand(item);
-                        if (translated.messageNumber > 0 ) {
-                            console.log("Message number :", translated.messageNumber, "  Message : ", translated.vizCommand);
+                        let messageNumber: string = item.substring(0, item.indexOf(" "));
+
+                        if (messageNumber > "0" ) {
+                            console.log("Message number :", messageNumber, "  Message : ", translated.vizCommand);
 
                             if (translated.vizResponseCommand != "") {
                                 console.log("Viz return message :", translated.vizResponseCommand);
-                                socket.write(translated.messageNumber + " " + translated.vizResponseCommand + '\0')
+                                socket.write(messageNumber + " " + translated.vizResponseCommand + '\0')
                             }
                             if (translated.ccgCommandType === 'play') {
                                 console.log("CasparCG play :", translated.ccgArgument);
