@@ -57,20 +57,26 @@ export class App {
 
                     this.vizMessages.map((item) => {
                         let translated: ITranslationItem = translateCommand(item);
-                        console.log("Message number :", translated.messageNumber, "  Message : ", translated.vizCommand);
+                        if (translated.messageNumber > 0 ) {
+                            console.log("Message number :", translated.messageNumber, "  Message : ", translated.vizCommand);
 
-                        if (translated.vizResponseCommand != "") {
-                            console.log("Viz return message :", translated.vizResponseCommand);
-                            socket.write(translated.messageNumber + " " + translated.vizResponseCommand + '\0')
-                        }
-                        if (translated.ccgCommandType === 'play') {
-                            console.log("CasparCG play :", translated.ccgArgument);
-                            // Load scene in CasparCG
-                            this.ccgConnection.play(
-                                1, // output,
-                                20, // layer,
-                                translated.ccgArgument, //Mediafile
-                            );
+                            if (translated.vizResponseCommand != "") {
+                                console.log("Viz return message :", translated.vizResponseCommand);
+                                socket.write(translated.messageNumber + " " + translated.vizResponseCommand + '\0')
+                            }
+                            if (translated.ccgCommandType === 'play') {
+                                console.log("CasparCG play :", translated.ccgArgument);
+                                // Load scene in CasparCG
+                                this.ccgConnection.play(
+                                    1, // output,
+                                    20, // layer,
+                                    translated.ccgArgument, //Mediafile
+                                    );
+                                }
+                        } else {
+                            if (item != "") {
+                                console.log("Unknown message : ", item);
+                            }
                         }
                     })
                 })
