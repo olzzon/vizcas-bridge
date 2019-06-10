@@ -1,7 +1,7 @@
 import { translationSchemes, ITranslationScheme, ITranslationItem } from './translationProtocols';
 
 export const translateCommand = (vizCommand: string): ITranslationItem => {
-    let commands: ITranslationScheme = translationSchemes
+    let commands: ITranslationScheme = [...translationSchemes];
     let numberOfCommands: number = commands.length;
 
     let message = vizCommand.substring(vizCommand.indexOf(" ")+1);
@@ -27,12 +27,12 @@ const thisCommand = (vizCommand: string, message: string): boolean => {
         return true
     }
     let splitArray: Array<string> = vizCommand.split("{argument}");
-    if (splitArray.length === 3) {
-        if(message.includes(vizCommand[0]) && message.includes(vizCommand[2])) {
+    if (splitArray.length === 2) {
+        if(message.includes(splitArray[0]) && message.includes(splitArray[1])) {
             return true
         }
-    } else if (splitArray.length === 2) {
-        if(message.includes(vizCommand[0])) {
+    } else if (splitArray.length === 1) {
+        if(message.includes(splitArray[0])) {
             return true
         }
     }
@@ -42,9 +42,7 @@ const thisCommand = (vizCommand: string, message: string): boolean => {
 const findArgumentInString = (vizCommand: string, message: string) => {
     let splitArray: Array<string> = vizCommand.split("{argument}");
     splitArray.map((textPart) => {
-        if (textPart !=  "{argument}") {
-            vizCommand.replace(textPart, "");
-        }
+        vizCommand.replace(textPart, "");
     })
     return vizCommand;
 }
