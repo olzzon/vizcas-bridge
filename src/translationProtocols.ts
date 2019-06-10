@@ -36,7 +36,7 @@ export const translationSchemes: ITranslationScheme = [
     },
     {
         vizCommand: "RENDERER*MAIN_LAYER SET_OBJECT SCENE*{argument}",
-        vizResponseCommand: "<F8947D18-08FB-4E44-8A68082B7A332D58>",  //Return scene UUID
+        vizResponseCommand: "<F8947D18-08FB-4E44-8A68082B7A332D58>",  //Return an UUID, seems to be of no concern what UUID to return
         ccgCommandType: "",
         ccgArgument: "{argument}",
     },
