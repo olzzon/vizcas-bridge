@@ -31,7 +31,7 @@ export const translationSchemes: ITranslationScheme = [
     {
         vizCommand: "SCENE*{argument} CUE",
         vizResponseCommand: "0", // Return zero  -- playing status?
-        ccgCommandType: "load",
+        ccgCommandType: "cgAdd",
         ccgArgument: "{argument}",
     },
     {
@@ -43,26 +43,7 @@ export const translationSchemes: ITranslationScheme = [
     {
         vizCommand: "SCENE*{argument}*STAGE START", // Start the Scene?
         vizResponseCommand: "",
-        ccgCommandType: "play",
-        ccgArgument: "{argument}",
-    },
-    // Testing purposes with static arguments:
-    {
-        vizCommand: "SCENE*Default/test CUE",
-        vizResponseCommand: "0", // Return zero  -- playing status?
-        ccgCommandType: "load",
-        ccgArgument: "{argument}",
-    },
-    {
-        vizCommand: "RENDERER*MAIN_LAYER SET_OBJECT SCENE*Default/test",
-        vizResponseCommand: "<F8947D18-08FB-4E44-8A68082B7A332D58>",  //Return scene UUID
-        ccgCommandType: "play",
-        ccgArgument: "{argument}",
-    },
-    {
-        vizCommand: "SCENE*Default/test*STAGE START", // Start the Scene?
-        vizResponseCommand: "",
-        ccgCommandType: "play",
+        ccgCommandType: "cgPlay",
         ccgArgument: "{argument}",
     },
 ];

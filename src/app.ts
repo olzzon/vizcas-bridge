@@ -65,15 +65,25 @@ export class App {
                                 console.log("Viz return message : ", messageNumber + " " + translated.vizResponseCommand);
                                 socket.write(messageNumber + " " + translated.vizResponseCommand + '\0')
                             }
-                            if (translated.ccgCommandType === 'play') {
-                                console.log("CasparCG play :", translated.ccgArgument);
+                            if (translated.ccgCommandType === 'cgAdd') {
+                                console.log("CasparCG load template :", translated.ccgArgument);
                                 // Load scene in CasparCG
-                                this.ccgConnection.play(
+                                this.ccgConnection.cgAdd(
                                     1, // output,
                                     20, // layer,
-                                    translated.ccgArgument, //Mediafile
-                                    );
-                                }
+                                    1, //Flashlayer
+                                    translated.ccgArgument, //template file
+                                    false
+                                );
+                            } else if (translated.ccgCommandType === 'cgPlay') {
+                                console.log("CasparCG play template :", translated.ccgArgument);
+                                // Load scene in CasparCG
+                                this.ccgConnection.cgPlay(
+                                    1, // output,
+                                    20, // layer,
+                                    1, //Flashlayer
+                                );
+                            }
                         } else {
                             if (item != "") {
                                 console.log("Unknown message : ", item);
