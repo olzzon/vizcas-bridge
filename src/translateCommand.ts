@@ -1,7 +1,7 @@
 import { translationSchemes, ITranslationScheme, ITranslationItem } from './translationProtocols';
 
 export const translateCommand = (vizCommand: string): ITranslationItem => {
-    let commands: ITranslationScheme = [...translationSchemes];
+    let commands: ITranslationScheme = translationSchemes();
     let numberOfCommands: number = commands.length;
 
     let message = vizCommand.substring(vizCommand.indexOf(" ")+1);
