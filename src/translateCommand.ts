@@ -11,6 +11,8 @@ export const translateCommand = (vizCommand: string): ITranslationItem => {
         if (thisCommand(commands[i].vizCommand, message)) {
             let argument = findArgumentInString(commands[i].vizCommand, message);
             commands[i].ccgArgument = replaceArgumentInString(commands[i].ccgArgument, argument)
+            let node = findArgumentInString(commands[i].vizCommand, message);
+            commands[i].ccgArgument = replaceNodeInString(commands[i].ccgArgument, node)
             return commands[i]
         }
     }
@@ -55,3 +57,23 @@ const replaceArgumentInString = (ccgCommand: string, argument: string): string =
         return ccgCommand;
     }
 }
+
+const findNodeInString = (vizCommand: string, message: string) => {
+    let splitArray: Array<string> = vizCommand.split("{NodeFullPath}");
+    let argument = message;
+    splitArray.map((textPart) => {
+        argument = argument.replace(textPart, "");
+    })
+    return argument;
+}
+
+
+const replaceNodeInString = (ccgCommand: string, node: string): string => {
+    if (ccgCommand.includes("{NodeFullPath}")) {
+        return ccgCommand.replace("{NodeFullPath}", node);
+    } else {
+        return ccgCommand;
+    }
+}
+
+

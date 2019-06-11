@@ -47,9 +47,19 @@ export const translationSchemes = (): ITranslationScheme => {
             ccgCommandType: "cgPlay",
             ccgArgument: "{argument}",
         },
+        {
+            vizCommand: "RENDERER*TREE*{NodeFullPath}*GEOM*TEXT SET {argument}", // Start the Scene?
+            vizResponseCommand: "",
+            ccgCommandType: "addText",
+            ccgArgument: "{NodeFullPath}*{argument}",
+        },
     ];
 }
 
+
+/* Recieve text:
+RENDERER*TREE*<NodeFullPath>*GEOM*TEXT SET <New Text>
+*/
 
             /* Initial initialization from VizTrio:
                 1 PLAY INIT
