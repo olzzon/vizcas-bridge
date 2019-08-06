@@ -48,10 +48,16 @@ export const translationSchemes = (): ITranslationScheme => {
             ccgArgument: "{argument}",
         },
         {
-            vizCommand: "RENDERER*TREE*{NodeFullPath}*GEOM*TEXT SET {argument}", // Start the Scene?
+            vizCommand: "RENDERER*MAIN_LAYER*TREE*$LOWER*FUNCTION*Toggle*object SET GEOM*{argument}", //
+            vizResponseCommand: "<F8947D18-08FB-4E44-8A68082B7A332D58>",
+            ccgCommandType: "",
+            ccgArgument: "",
+        },
+        {
+            vizCommand: "RENDERER*MAIN_LAYER*TREE*$LOWER$other$object*FUNCTION*ControlObject*in SET ON 08 SET Data1\010 SET Data2", //
             vizResponseCommand: "",
             ccgCommandType: "addText",
-            ccgArgument: "{NodeFullPath}*{argument}",
+            ccgArgument: "",
         },
     ];
 }
@@ -83,3 +89,18 @@ RENDERER*TREE*<NodeFullPath>*GEOM*TEXT SET <New Text>
             9 MAIN*TEXTURE*MEMORY GET.
             9 { TOTAL 2147483648 PIXEL 32768 ALLOCATED 842014720 SIZE 0 }.
             */
+/*
+           Recieved command tcp-string : 11 RENDERER*MAIN_LAYER SET_OBJECT SCENE*TV2/PILOT_TEMPLATES/2015_DESIGN/NYHEDERNE/overlays/MASTER12 RENDERER*MAIN_LAYER*TREE*$LOWER*FUNCTION*Toggle*object SET GEOM*TV2/PILOT_TEMPLATES/2015_DESIGN/NYHEDERNE/overlays/bund13 RENDERER*MAIN_LAYER*TREE*$LOWER$other$object*FUNCTION*ControlObject*in SET ON 08 SET Data1\010 SET Data214 RENDERER*MAIN_LAYER*STAGE*DIRECTOR*LOWER SHOW $NAME15 RENDERER*MAIN_LAYER*TREE*$LOWER*FUNCTION*Toggle*switch INVOKE
+           app.ts:31
+           Message :  11 RENDERER*MAIN_LAYER SET_OBJECT SCENE*TV2/PILOT_TEMPLATES/2015_DESIGN/NYHEDERNE/overlays/MASTER  Argument : TV2/PILOT_TEMPLATES/2015_DESIGN/NYHEDERNE/overlays/MASTER
+           app.ts:38
+           Viz return message :  11 <F8947D18-08FB-4E44-8A68082B7A332D58>
+           app.ts:41
+           Unknown message :  12 RENDERER*MAIN_LAYER*TREE*$LOWER*FUNCTION*Toggle*object SET GEOM*TV2/PILOT_TEMPLATES/2015_DESIGN/NYHEDERNE/overlays/bund
+           app.ts:65
+           Unknown message :  13 RENDERER*MAIN_LAYER*TREE*$LOWER$other$object*FUNCTION*ControlObject*in SET ON 08 SET Data1\010 SET Data2
+           app.ts:65
+           Unknown message :  14 RENDERER*MAIN_LAYER*STAGE*DIRECTOR*LOWER SHOW $NAME
+           app.ts:65
+           Unknown message :  15 RENDERER*MAIN_LAYER*TREE*$LOWER*FUNCTION*Toggle*switch INVOKE
+*/

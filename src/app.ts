@@ -63,6 +63,7 @@ export class App {
                         } else {
                             if (item != "") {
                                 console.log("Unknown message : ", item);
+                                socket.write(messageNumber);
                             }
                         }
                     })
