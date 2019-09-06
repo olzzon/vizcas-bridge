@@ -54,7 +54,7 @@ export const translationSchemes = (): ITranslationScheme => {
             ccgArgument: "",
         },
         {
-            vizCommand: "RENDERER*MAIN_LAYER*TREE*$LOWER$other$object*FUNCTION*ControlObject*in SET ON 08 SET Data1\010 SET Data2", //
+            vizCommand: "RENDERER*MAIN_LAYER*TREE*$LOWER$other$object*FUNCTION*ControlObject*in SET ON 08 SET Data1\\010 SET Data2", //
             vizResponseCommand: "",
             ccgCommandType: "addText",
             ccgArgument: "",
